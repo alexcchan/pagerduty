@@ -24,6 +24,19 @@ mapping_table = {
         'path': '/escalation_policies',
         'valid_params': ['offset', 'limit', 'query', 'teams', 'include']
     },
+    'list_on_call_escalation_policies': {
+        'method': 'GET',
+        'path': '/escalation_policies/on_call',
+        'valid_params': ['offset', 'limit', 'query']
+    },
+    'get_escalation_policy_rule': {
+        'method': 'GET',
+        'path': '/escalation_policies/{{escalation_policy_id}}/escalation_rules/{{escalation_rule_id}}'
+    },
+    'list_escalation_policy_rules': {
+        'method': 'GET',
+        'path': '/escalation_policies/{{escalation_policy_id}}/escalation_rules'
+    },
 
     # Incidents
     'get_incident': {
@@ -39,6 +52,10 @@ mapping_table = {
         'method': 'GET',
         'path': '/incidents',
         'valid_params': ['offset', 'limit', 'since', 'until', 'date_range', 'fields', 'status', 'incident_key', 'service', 'teams', 'assigned_to_user', 'time_zone', 'sort_by']
+    },
+    'list_incident_notes': {
+        'method': 'GET',
+        'path': '/incidents/{{incident_id}}/notes'
     },
 
     # Log Entries
@@ -91,6 +108,11 @@ mapping_table = {
         'path': '/schedules/{{schedule_id}}/entries',
         'valid_params': ['since', 'until', 'overflow', 'time_zone', 'user_id']
     },
+    'list_schedule_overrides': {
+        'method': 'GET',
+        'path': '/schedules/{{schedule_id}}/overrides',
+        'valid_params': ['since', 'until', 'editable', 'overflow']
+    },
     'list_schedule_users': {
         'method': 'GET',
         'path': '/schedules/{{schedule_id}}/users',
@@ -135,5 +157,26 @@ mapping_table = {
         'method': 'GET',
         'path': '/users',
         'valid_params': ['query', 'include']
+    },
+    'list_on_call_users': {
+        'method': 'GET',
+        'path': '/users/on_call',
+        'valid_params': ['offset', 'limit', 'query', 'include']
+    },
+    'get_user_contact_method': {
+        'method': 'GET',
+        'path': '/users/{{user_id}}/contact_methods/{{contact_method_id}}'
+    },
+    'list_user_contact_methods': {
+        'method': 'GET',
+        'path': '/users/{{user_id}}/contact_methods'
+    },
+    'get_user_notification_rule': {
+        'method': 'GET',
+        'path': '/users/{{user_id}}/notification_rules/{{notification_rule_id}}'
+    },
+    'list_user_notification_rules': {
+        'method': 'GET',
+        'path': '/users/{{user_id}}/notification_rules'
     },
 }
