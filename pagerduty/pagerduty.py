@@ -12,6 +12,7 @@ try:
 except:
     import json
 
+from datetime import datetime
 from endpoints_v1 import mapping_table as mapping_table_v1
 from httplib import responses
 
@@ -103,3 +104,10 @@ class PagerDuty(object):
             return json.loads(content)
         else:
             return responses[response_status]
+
+    @staticmethod
+    def date_string(d=None):
+        """Format date/time according to PagerDuty ISO 8601."""
+        if d is None:
+            d = datetime.utcnow()
+        return d.strftime('%Y-%m-%dT%H:%M:%SZ')
