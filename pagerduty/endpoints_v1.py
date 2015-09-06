@@ -156,7 +156,7 @@ mapping_table = {
     'list_users': {
         'method': 'GET',
         'path': '/users',
-        'valid_params': ['query', 'include']
+        'valid_params': ['offset', 'limit', 'query', 'include']
     },
     'list_on_call_users': {
         'method': 'GET',
