@@ -36,10 +36,10 @@ def clean_kwargs(kwargs):
     for key, value in kwargs.iteritems():
         if hasattr(value, '__iter__'):
             kwargs[key] = ','.join(map(str, value))
-    underscore_keys = [key for key in kwargs if key.find('_')>=0]
-    for key in underscore_keys:
-        val = kwargs.pop(key)
-        kwargs[key.replace('_','-')] = val
+#    underscore_keys = [key for key in kwargs if key.find('_')>=0]
+#    for key in underscore_keys:
+#        val = kwargs.pop(key)
+#        kwargs[key.replace('_','-')] = val
 
 
 class PagerDuty(object):
@@ -57,15 +57,20 @@ class PagerDuty(object):
     def __getattr__(self, api_call):
         def call(self, **kwargs):
             api_map = self.mapping_table[api_call]
-            path = self.mapping_table.get('path_prefix','') + api_map.get('path','')
             method = api_map.get('method', DEFAULT_HTTP_METHOD)
             status = api_map.get('status', DEFAULT_HTTP_STATUS_CODE)
             valid_params = api_map.get('valid_params', [])
             body = kwargs.pop('data', None)
+            api_map_path = api_map.get('path','')
+            if api_map_path.startswith('https://'):
+                url_template = api_map_path
+            else:
+                path = self.mapping_table.get('path_prefix','') + api_map_path
+                url_template = PAGER_DUTY_BASE_URL % self.subdomain + path
             url = re.sub(
                     '\{\{(?P<m>[a-zA-Z_]+)\}\}',
                     lambda m: "%s" % urllib.quote(str(kwargs.pop(m.group(1),''))),
-                    PAGER_DUTY_BASE_URL % self.subdomain + path
+                    url_template
             )
             clean_kwargs(kwargs)
             for kw in kwargs:

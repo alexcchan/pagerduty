@@ -57,6 +57,10 @@ mapping_table = {
         'method': 'GET',
         'path': '/incidents/{{incident_id}}/notes'
     },
+    'create_incident': {
+        'method': 'POST',
+        'path': 'https://events.pagerduty.com/generic/2010-04-15/create_event.json'
+    },
 
     # Log Entries
     'get_log_entry': {
@@ -128,7 +132,7 @@ mapping_table = {
     'list_services': {
         'method': 'GET',
         'path': '/services',
-        'valid_params': ['offset', 'limit', 'teams', 'include', 'time_zone', 'query', 'sort_by']
+        'valid_params': ['offset', 'limit', 'teams', 'include', 'include[]', 'time_zone', 'query', 'sort_by']
     },
 
     # Teams
