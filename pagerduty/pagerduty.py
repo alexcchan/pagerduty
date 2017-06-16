@@ -32,14 +32,18 @@ class PagerDutyError(Exception):
         return repr('%s: %s' % (self.error_code, self.msg))
 
 
-def clean_kwargs(kwargs):
+def kwargs_to_params(kwargs):
+    params = []
     for key, value in kwargs.iteritems():
         if hasattr(value, '__iter__'):
-            kwargs[key] = ','.join(map(str, value))
-#    underscore_keys = [key for key in kwargs if key.find('_')>=0]
-#    for key in underscore_keys:
-#        val = kwargs.pop(key)
-#        kwargs[key.replace('_','-')] = val
+            if key.endswith('[]'):
+                for v in value:
+                    params.append((key,v))
+            else:
+                params.append((key,','.join(map(str, value))))
+        else:
+            params.append((key,value))
+    return params
 
 
 class PagerDuty(object):
@@ -72,12 +76,11 @@ class PagerDuty(object):
                     lambda m: "%s" % urllib.quote(str(kwargs.pop(m.group(1),''))),
                     url_template
             )
-            clean_kwargs(kwargs)
             for kw in kwargs:
                 if kw not in valid_params:
                     raise TypeError("%s() got an unexpected keyword argument "
                             "'%s'" % (api_call, kw))
-            url += '?' + urllib.urlencode(kwargs)
+            url += '?' + urllib.urlencode(kwargs_to_params(kwargs))
             return self._make_request(method, url, body, status)
         return call.__get__(self)
 
